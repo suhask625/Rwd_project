@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #f8fafc, #dbeafe);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(to right, #1e3a8a, #1e40af, #1e3a8a);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-bottom: 4px solid #f97316;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-icon i {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+        }
+
+        .header-text h1 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+
+        .header-text p {
+            color: #fb923c;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        .date-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f97316;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            border: none;
+            background: none;
+            color: #4b5563;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+
+        .nav-tab:hover {
+            color: #1e3a8a;
+            background: #f3f4f6;
+        }
+
+        .nav-tab.active {
+            color: #1e3a8a;
+            background: #fef3c7;
+            border-bottom-color: #f97316;
+        }
+
+        .nav-tab i {
+            font-size: 1.25rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card.blue {
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .stat-card.green {
+            border-left: 4px solid #16a34a;
+        }
+
+        .stat-card.orange {
+            border-left: 4px solid #f97316;
+        }
+
+        .stat-card.red {
+            border-left: 4px solid #dc2626;
+        }
+
+        .stat-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 1.875rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .stat-card.blue .stat-value {
+            color: #1e3a8a;
+        }
+
+        .stat-card.green .stat-value {
+            color: #16a34a;
+        }
+
+        .stat-card.orange .stat-value {
+            color: #f97316;
+        }
+
+        .stat-card.red .stat-value {
+            color: #dc2626;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            opacity: 0.7;
+        }
+
+        .stat-card.blue .stat-icon {
+            color: #1e3a8a;
+        }
+
+        .stat-card.green .stat-icon {
+            color: #16a34a;
+        }
+
+        .stat-card.orange .stat-icon {
+            color: #f97316;
+        }
+
+        .stat-card.red .stat-icon {
+            color: #dc2626;
+        }
+
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        /* Search Box */
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 28rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #1e3a8a;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        .btn-return {
+            color: #1e3a8a;
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .btn-return:hover {
+            color: #1e40af;
+        }
+
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #1e3a8a;
+            transition: all 0.3s;
+        }
+
+        .book-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .book-icon {
+            background: #dbeafe;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .book-icon i {
+            font-size: 2rem;
+            color: #1e3a8a;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge.available {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge.unavailable {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .book-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-author {
+            color: #4b5563;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .book-isbn {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: #fed7aa;
+            color: #c2410c;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f9fafb;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            color: #1f2937;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-badge.issued {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.overdue {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.returned {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.75rem;
+            max-width: 32rem;
+            width: 100%;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #1f2937;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #1e3a8a;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1e40af;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-text h1 {
+                font-size: 1.25rem;
+            }
+
+            .header-text p {
+                font-size: 0.75rem;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+            }
+
+            .nav-tab span {
+                display: none;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="header-text">
+                        <h1>INSTITUTE OF TECHNOLOGY</h1>
+                        <p>LIBRARY MANAGEMENT SYSTEM</p>
+                    </div>
+                </div>
+                <div class="date-badge">
+                    <i class="fas fa-calendar"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="container">
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="dashboard">
+                    <i class="fas fa-book-open"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-tab" data-tab="books">
+                    <i class="fas fa-book"></i>
+                    <span>Books</span>
+                </button>
+                <button class="nav-tab" data-tab="students">
+                    <i class="fas fa-users"></i>
+                    <span>Students</span>
+                </button>
+                <button class="nav-tab" data-tab="transactions">
+                    <i class="fas fa-clock"></i>
+                    <span>Transactions</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card blue">
+                        <div class="stat-content">
+                            <div>
+                                <p class="stat-label">Total Books</p>
+                                <p class="stat-value" id="totalBooks">0</p>
+                            </div>
+                            <i class="fas fa-book stat-icon"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-content">
+                            <div>
+                                <p class="stat-label">Available</p>
+                                <p class="stat-value" id="availableBooks">0</p>
+                            </div>
+                            <i class="fas fa-check-circle stat-icon"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-content">
+                            <div>
+                                <p class="stat-label">Students</p>
+                                <p class="stat-value" id="totalStudents">0</p>
+                            </div>
+                            <i class="fas fa-users stat-icon"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-content">
+                            <div>
+                                <p class="stat-label">Overdue</p>
+                                <p class="stat-value" id="overdueBooks">0</p>
+                            </div>
+                            <i class="fas fa-exclamation-circle stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Recent Transactions</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Book</th>
+                                    <th>Issue Date</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTransactions"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Books Tab -->
+            <div id="books" class="tab-content">
+                <div class="toolbar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="bookSearch" placeholder="Search books...">
+                    </div>
+                    <button class="btn-primary" onclick="openModal('book')">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Book</span>
+                    </button>
+                </div>
+                <div id="booksGrid" class="books-grid"></div>
+            </div>
+
+            <!-- Students Tab -->
+            <div id="students" class="tab-content">
+                <div class="toolbar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="studentSearch" placeholder="Search students...">
+                    </div>
+                    <button class="btn-primary" onclick="openModal('student')">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Student</span>
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>USN</th>
+                                    <th>Department</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div id="transactions" class="tab-content">
+                <div class="toolbar">
+                    <h2 class="section-title">All Transactions</h2>
+                    <button class="btn-primary" onclick="openModal('issue')">
+                        <i class="fas fa-plus"></i>
+                        <span>Issue Book</span>
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Book</th>
+                                    <th>Issue Date</th>
+                                    <th>Due Date</th>
+                                    <th>Return Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        let books = [];
+        let students = [];
+        let transactions = [];
+
+        // Initialize with sample data
+        function initializeData() {
+            books = [
+                { id: 1, title: 'Data Structures & Algorithms', author: 'Cormen', isbn: '978-0262033848', category: 'Computer Science', copies: 5, available: 3 },
+                { id: 2, title: 'Operating Systems', author: 'Silberschatz', isbn: '978-1118063330', category: 'Computer Science', copies: 4, available: 2 },
+                { id: 3, title: 'Digital Electronics', author: 'Morris Mano', isbn: '978-0132145850', category: 'Electronics', copies: 3, available: 3 },
+            ];
+
+            students = [
+                { id: 1, name: 'Rahul Sharma', usn: '1AT20CS001', department: 'CSE', email: 'rahul@institute.edu', phone: '9876543210' },
+                { id: 2, name: 'Priya Kumar', usn: '1AT20EC015', department: 'ECE', email: 'priya@institute.edu', phone: '9876543211' },
+            ];
+
+            transactions = [
+                { id: 1, studentId: 1, bookId: 1, studentName: 'Rahul Sharma', bookTitle: 'Data Structures & Algorithms', issueDate: '2024-11-20', dueDate: '2024-12-04', returnDate: null, status: 'issued' },
+            ];
+
+            updateDashboard();
+            renderBooks();
+            renderStudents();
+            renderTransactions();
+        }
+
+        // Set current date
+        function setCurrentDate() {
+            const dateElement = document.getElementById('currentDate');
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            dateElement.textContent = new Date().toLocaleDateString('en-IN', options);
+        }
+
+        // Tab Navigation
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetTab = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Update active content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        }
+
+        // Update Dashboard Stats
+        function updateDashboard() {
+            const totalBooks = books.reduce((sum, book) => sum + book.copies, 0);
+            const availableBooks = books.reduce((sum, book) => sum + book.available, 0);
+            const overdueCount = getOverdueTransactions().length;
+
+            document.getElementById('totalBooks').textContent = totalBooks;
+            document.getElementById('availableBooks').textContent = availableBooks;
+            document.getElementById('totalStudents').textContent = students.length;
+            document.getElementById('overdueBooks').textContent = overdueCount;
+
+            renderRecentTransactions();
+        }
+
+        // Get Overdue Transactions
+        function getOverdueTransactions() {
+            const today = new Date();
+            return transactions.filter(t => {
+                if (t.status !== 'issued') return false;
+                const dueDate = new Date(t.dueDate);
+                return dueDate < today;
+            });
+        }
+
+        // Render Recent Transactions
+        function renderRecentTransactions() {
+            const tbody = document.getElementById('recentTransactions');
+            const recent = transactions.slice(-5).reverse();
+            
+            tbody.innerHTML = recent.map(t => `
+                <tr>
+                    <td>${t.studentName}</td>
+                    <td>${t.bookTitle}</td>
+                    <td>${t.issueDate}</td>
+                    <td>${t.dueDate}</td>
+                    <td>
+                        <span class="status-badge ${t.status === 'issued' ? 'issued' : 'returned'}">
+                            ${t.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Render Books
+        function renderBooks() {
+            const grid = document.getElementById('booksGrid');
+            const searchTerm = document.getElementById('bookSearch').value.toLowerCase();
+            
+            const filtered = books.filter(book => 
+                book.title.toLowerCase().includes(searchTerm) ||
+                book.author.toLowerCase().includes(searchTerm) ||
+                book.isbn.includes(searchTerm)
+            );
+
+            grid.innerHTML = filtered.map(book => `
+                <div class="book-card">
+                    <div class="book-header">
+                        <div class="book-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <span class="badge ${book.available > 0 ? 'available' : 'unavailable'}">
+                            ${book.available}/${book.copies} Available
+                        </span>
+                    </div>
+                    <h3 class="book-title">${book.title}</h3>
+                    <p class="book-author">by ${book.author}</p>
+                    <p class="book-isbn">ISBN: ${book.isbn}</p>
+                    <span class="category-badge">${book.category}</span>
+                </div>
+            `).join('');
+        }
+
+        // Render Students
+        function renderStudents() {
+            const tbody = document.getElementById('studentsTable');
+            const searchTerm = document.getElementById('studentSearch').value.toLowerCase();
+            
+            const filtered = students.filter(student =>
+                student.name.toLowerCase().includes(searchTerm) ||
+                student.usn.toLowerCase().includes(searchTerm)
+            );
+
+            tbody.innerHTML = filtered.map(student => `
+                <tr>
+                    <td>${student.name}</td>
+                    <td>${student.usn}</td>
+                    <td>${student.department}</td>
+                    <td>${student.email}</td>
+                    <td>${student.phone}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Render Transactions
+        function renderTransactions() {
+            const tbody = document.getElementById('transactionsTable');
+            
+            tbody.innerHTML = transactions.map(t => {
+                const isOverdue = t.status === 'issued' && new Date(t.dueDate) < new Date();
+                const statusClass = t.status === 'issued' ? (isOverdue ? 'overdue' : 'issued') : 'returned';
+                const statusText = isOverdue ? 'Overdue' : t.status;
+                
+                return `
+                    <tr>
+                        <td>${t.studentName}</td>
+                        <td>${t.bookTitle}</td>
+                        <td>${t.issueDate}</td>
+                        <td>${t.dueDate}</td>
+                        <td>${t.returnDate || '-'}</td>
+                        <td>
+                            <span class="status-badge ${statusClass}">
+                                ${statusText}
+                            </span>
+                        </td>
+                        <td>
+                            ${t.status === 'issued' ? `
+                                <button class="btn-return" onclick="returnBook(${t.id})">
+                                    Return
+                                </button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modal.classList.add('active');
+            
+            if (type === 'book') {
+                modalTitle.textContent = 'Add New Book';
+                modalBody.innerHTML = `
+                    <div class="form-group">
+                        <input type="text" id="bookTitle" placeholder="Book Title" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="bookAuthor" placeholder="Author" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="bookISBN" placeholder="ISBN" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="bookCategory" placeholder="Category" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="bookCopies" placeholder="Number of Copies" min="1" value="1" required>
+                    </div>
+                    <button class="submit-btn" onclick="addBook()">Add Book</button>
+                `;
+            } else if (type === 'student') {
+                modalTitle.textContent = 'Add New Student';
+                modalBody.innerHTML = `
+                    <div class="form-group">
+                        <input type="text" id="studentName" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="studentUSN" placeholder="USN" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="studentDept" placeholder="Department" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="studentEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="studentPhone" placeholder="Phone" required>
+                    </div>
+                    <button class="submit-btn" onclick="addStudent()">Add Student</button>
+                `;
+            } else if (type === 'issue') {
+                modalTitle.textContent = 'Issue Book';
+                modalBody.innerHTML = `
+                    <div class="form-group">
+                        <select id="issueStudent" required>
+                            <option value="">Select Student</option>
+                            ${students.map(s => `<option value="${s.id}">${s.name} (${s.usn})</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="issueBook" required>
+                            <option value="">Select Book</option>
+                            ${books.filter(b => b.available > 0).map(b => `<option value="${b.id}">${b.title} (Available: ${b.available})</option>`).join('')}
+                        </select>
+                    </div>
+                    <button class="submit-btn" onclick="issueBook()">Issue Book</button>
+                `;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Add Book
+        function addBook() {
+            const title = document.getElementById('bookTitle').value;
+            const author = document.getElementById('bookAuthor').value;
+            const isbn = document.getElementById('bookISBN').value;
+            const category = document.getElementById('bookCategory').value;
+            const copies = parseInt(document.getElementById('bookCopies').value);
+
+            if (!title || !author || !isbn || !category || !copies) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const newBook = {
+                id: books.length > 0 ? Math.max(...books.map(b => b.id)) + 1 : 1,
+                title,
+                author,
+                isbn,
+                category,
+                copies,
+                available: copies
+            };
+
+            books.push(newBook);
+            renderBooks();
+            updateDashboard();
+            closeModal();
+        }
+
+        // Add Student
+        function addStudent() {
+            const name = document.getElementById('studentName').value;
+            const usn = document.getElementById('studentUSN').value;
+            const department = document.getElementById('studentDept').value;
+            const email = document.getElementById('studentEmail').value;
+            const phone = document.getElementById('studentPhone').value;
+
+            if (!name || !usn || !department || !email || !phone) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const newStudent = {
+                id: students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1,
+                name,
+                usn,
+                department,
+                email,
+                phone
+            };
+
+            students.push(newStudent);
+            renderStudents();
+            updateDashboard();
+            closeModal();
+        }
+
+        // Issue Book
+        function issueBook() {
+            const studentId = parseInt(document.getElementById('issueStudent').value);
+            const bookId = parseInt(document.getElementById('issueBook').value);
+
+            if (!studentId || !bookId) {
+                alert('Please select both student and book');
+                return;
+            }
+
+            const student = students.find(s => s.id === studentId);
+            const book = books.find(b => b.id === bookId);
+
+            if (!student || !book || book.available === 0) {
+                alert('Invalid selection or book not available');
+                return;
+            }
+
+            const issueDate = new Date();
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 14);
+
+            const newTransaction = {
+                id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                studentId: student.id,
+                bookId: book.id,
+                studentName: student.name,
+                bookTitle: book.title,
+                issueDate: issueDate.toISOString().split('T')[0],
+                dueDate: dueDate.toISOString().split('T')[0],
+                returnDate: null,
+                status: 'issued'
+            };
+
+            transactions.push(newTransaction);
+            book.available--;
+
+            renderTransactions();
+            renderBooks();
+            updateDashboard();
+            closeModal();
+        }
+
+        // Return Book
+        function returnBook(transactionId) {
+            const transaction = transactions.find(t => t.id === transactionId);
+            if (!transaction) return;
+
+            const book = books.find(b => b.id === transaction.bookId);
+            if (!book) return;
+
+            transaction.returnDate = new Date().toISOString().split('T')[0];
+            transaction.status = 'returned';
+            book.available++;
+
+            renderTransactions();
+            renderBooks();
+            updateDashboard();
+        }
+
+        // Search Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            setCurrentDate();
+            setupTabs();
+            initializeData();
+
+            document.getElementById('bookSearch').addEventListener('input', renderBooks);
+            document.getElementById('studentSearch').addEventListener('input', renderStudents);
+
+            // Close modal on outside click
+            document.getElementById('modal').addEventListener('click', (e) => {
+                if (e.target.id === 'modal') {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
